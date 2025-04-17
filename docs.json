@@ -36,27 +36,10 @@
       },
       {
         "tab": "Trial",
-        "openapi": "https://api.staging.craig.controlflowlabs.com/apispec.json"
-      },
-      {
-        "tab": "API Reference",
-        "groups": [
-          {
-            "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
-          }
-        ]
+        "openapi": "https://api.staging.craig.controlflowlabs.com/apispec.json",
+        "playground": {
+          "proxy": false
+        }
       }
     ],
     "global": {
