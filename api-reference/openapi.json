@@ -1,217 +1,4260 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.1.0,
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
+        "title": "CRAIG API",
+        "version": "1.0"
     },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
-  "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
+    "servers": [
+        {
+            "url": "{protocol}://0.0.0.0:5010/",
+            "variables": {
+                "protocol": {
+                    "enum": [
+                        "http",
+                        "https"
+                    ],
+                    "default": "http"
+                },
+                "version": {
+                    "enum": [
+                        "v1"
+                    ],
+                    "default": "v1"
                 }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
+            },
+            "description": "development"
         },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
+        {
+            "url": "{protocol}://api.staging.craig.controlflowlabs.com/",
+            "variables": {
+                "protocol": {
+                    "enum": [
+                        "http",
+                        "https"
+                    ],
+                    "default": "https"
+                },
+                "version": {
+                    "enum": [
+                        "v1"
+                    ],
+                    "default": "v1"
                 }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
+            },
+            "description": "staging"
         },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
+        {
+            "url": "{protocol}://api.craig.controlflowlabs.com/",
+            "variables": {
+                "protocol": {
+                    "enum": [
+                        "http",
+                        "https"
+                    ],
+                    "default": "https"
+                },
+                "version": {
+                    "enum": [
+                        "v1"
+                    ],
+                    "default": "v1"
+                }
+            },
+            "description": "production"
         }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
+    ],
+    "tags": [
+        {
+            "name": "Patient"
+        },
+        {
+            "name": "Auth"
+        },
+        {
+            "name": "Chat"
+        },
+        {
+            "name": "Test"
+        },
+        {
+            "name": "Platform"
+        },
+        {
+            "name": "Inquiries"
+        },
+        {
+            "name": "Tenant"
+        },
+        {
+            "name": "Dashboard"
+        },
+        {
+            "name": "Treatment"
+        },
+        {
+            "name": "Knowledge_Base"
+        },
+        {
+            "name": "Upsell"
+        },
+        {
+            "name": "Webhook"
         }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
+    ],
+    "paths": {
+        "/v1/test/": {
+            "get": {
+                "operationId": "test_hello",
+                "parameters": [],
+                "tags": [
+                    "Test"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LocationBase1"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LocationBase"
+                            }
+                        }
+                    },
+                    "required": true
+                }
             }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
+        },
+        "/v1/patient": {
+            "get": {
+                "operationId": "patient_get_patient",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Get patient profile by customer_id",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetPatient"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "patient_insert_patient",
+                "parameters": [],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Insert a new patient profile",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InsertPatient"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Patient1"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            },
+            "put": {
+                "operationId": "patient_edit_patient",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Edit patient profile by customer_id",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EditPatient"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Patient2"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            },
+            "delete": {
+                "operationId": "patient_delete_patient",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Delete patient profile by customer_id",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeletePatient"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/kb/list": {
+            "get": {
+                "operationId": "knowledge_base_list",
+                "parameters": [],
+                "tags": [
+                    "Knowledge_Base"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StructuredDataResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/webhook/": {
+            "get": {
+                "operationId": "webhook_webhook_get",
+                "parameters": [],
+                "tags": [
+                    "Webhook"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OkResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/chat/list": {
+            "get": {
+                "operationId": "chat_list",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "order_by",
+                        "schema": {
+                            "type": "string",
+                            "writeOnly": true
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "order_direction",
+                        "schema": {
+                            "type": "string",
+                            "default": "desc",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "writeOnly": true
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "platform",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "branch",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "receiver_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "q",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get list of conversations",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedSchemaMeta"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/chat/send": {
+            "post": {
+                "operationId": "chat_send_chat",
+                "parameters": [],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Send chat message",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OkResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Chat"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        },
+        "/v1/platforms": {
+            "post": {
+                "operationId": "platform_insert_platform",
+                "parameters": [],
+                "tags": [
+                    "Platform"
+                ],
+                "summary": "Insert a new platform profile",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InsertPlatform"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Platform"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            },
+            "put": {
+                "operationId": "platform_edit_platform",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "platform_id",
+                        "description": "Unique identifier for the platform",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Platform"
+                ],
+                "summary": "Edit platform profile by platform_id",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EditPlatform"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Platform2"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            },
+            "delete": {
+                "operationId": "platform_delete_platform",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "platform_id",
+                        "description": "Unique identifier for the platform",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Platform"
+                ],
+                "summary": "Delete platform profile by platform_id",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeletePlatform"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/treatment": {
+            "post": {
+                "operationId": "treatment_insert_treatment",
+                "parameters": [],
+                "tags": [
+                    "Treatment"
+                ],
+                "summary": "Insert a new treatment",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InsertPatient1"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatientHistory"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            },
+            "put": {
+                "operationId": "treatment_update_treatment",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "treatment_id",
+                        "description": "Unique identifier for the treatment",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Treatment"
+                ],
+                "summary": "Update a treatment",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdatePatient"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PatientHistory2"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            },
+            "delete": {
+                "operationId": "treatment_delete_treatment",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "treatment_id",
+                        "description": "Unique identifier for the treatment",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Treatment"
+                ],
+                "summary": "Delete a treatment",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeletePatient1"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/kb/upload": {
+            "post": {
+                "operationId": "knowledge_base_upload",
+                "parameters": [],
+                "tags": [
+                    "Knowledge_Base"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GenericDataResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MultipleFilesUpload"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        },
+        "/v1/webhook/ig": {
+            "get": {
+                "operationId": "webhook_webhook_get_ig",
+                "parameters": [],
+                "tags": [
+                    "Webhook"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OkResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/auth/create": {
+            "post": {
+                "operationId": "auth_create_user",
+                "parameters": [],
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateUserResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/tenant/list": {
+            "get": {
+                "operationId": "tenant_list",
+                "parameters": [],
+                "tags": [
+                    "Tenant"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/StructuredDataResponse1"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/patient/list": {
+            "get": {
+                "operationId": "patient_list_patients",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "order_by",
+                        "schema": {
+                            "type": "string",
+                            "writeOnly": true
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "order_direction",
+                        "schema": {
+                            "type": "string",
+                            "default": "desc",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "writeOnly": true
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "status",
+                        "description": "Patient status (e.g., 'new','old','prospect')",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "q",
+                        "description": "Search query for patient name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "platform_id",
+                        "description": "Unique identifier for the platform",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "is_retry",
+                        "description": "Flag indicating if the request is a retry",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Get list of patient profiles",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedSchemaMeta1"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/patient/orgs": {
+            "get": {
+                "operationId": "patient_get_org_patients",
+                "parameters": [],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Get list of org_id",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetOrgPatients"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/patient/info": {
+            "get": {
+                "operationId": "patient_get_personal_information",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Get personal information of patient profile",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetPersonalInformation"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "operationId": "patient_add_or_edit_personal_information",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Add or edit personal information to patient profile",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AddPersonalInformation"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PersonalInformation"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        },
+        "/v1/inquiry/list": {
+            "get": {
+                "operationId": "inquiries_get_all_platforms",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Inquiries"
+                ],
+                "summary": "Get list of platforms",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetOrgPatients1"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/chat/list/poll": {
+            "get": {
+                "operationId": "chat_conversations_poll",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "timestamp",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "platform",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "branch",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "receiver_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get latest conversations",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatUsersSchema45"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/platforms/list": {
+            "get": {
+                "operationId": "platform_get_all_platforms",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Platform"
+                ],
+                "summary": "Get list of platforms",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetOrgPatients2"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/treatment/list": {
+            "get": {
+                "operationId": "treatment_get_all_treatments",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Treatment"
+                ],
+                "summary": "Get list of treatments",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetOrgPatients3"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/upsell/message": {
+            "post": {
+                "operationId": "upsell_upsell_patient",
+                "parameters": [],
+                "tags": [
+                    "Upsell"
+                ],
+                "summary": "Inserting an Upsell message for a patient",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpsellPatient"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostPatientUpsell"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        },
+        "/v1/patient/archive": {
+            "delete": {
+                "operationId": "patient_archive_patient",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Archive patient profile by customer_id",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ArchivePatient"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/patient/remarks": {
+            "post": {
+                "operationId": "patient_add_or_edit_remarks",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Add or edit remarks to patient profile",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EditRemarks"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Patient4"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        },
+        "/v1/tenant/activate": {
+            "get": {
+                "operationId": "tenant_activate_feature_flag",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "tenant_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "feature_name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Tenant"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OkResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/upsell/services": {
+            "get": {
+                "operationId": "upsell_get_services",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "is_retry",
+                        "description": "Flag indicating if the request is a retry",
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Upsell"
+                ],
+                "summary": "Get all upsell services for a patient",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpsellItem1"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/chat/{message_id}": {
+            "get": {
+                "operationId": "chat_get_chat",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "message_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "offset",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "order_by",
+                        "schema": {
+                            "type": "string",
+                            "writeOnly": true
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "order_direction",
+                        "schema": {
+                            "type": "string",
+                            "default": "desc",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ],
+                            "writeOnly": true
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get chat details by message_id",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PaginatedSchemaMeta2"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/tenant/deactivate": {
+            "get": {
+                "operationId": "tenant_deactivate_feature_flag",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "tenant_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "feature_name",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Tenant"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OkResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/patient/info/status": {
+            "post": {
+                "operationId": "patient_add_edit_status",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "customer_id",
+                        "description": "Unique identifier for the patient",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Add or edit status to patient profile",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EditPatientStatus"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PersonalInformation1"
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        },
+        "/v1/patient/bulk_insert": {
+            "post": {
+                "operationId": "patient_bulk_insert_patients",
+                "parameters": [],
+                "tags": [
+                    "Patient"
+                ],
+                "summary": "Bulk insert patient profiles",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BulkInsertPatients"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Patient"
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                }
+            }
+        },
+        "/v1/dashboard/inquiries": {
+            "get": {
+                "operationId": "dashboard_get_inquiries",
+                "parameters": [],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get list of inquiries",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetInquiries"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/dashboard/conversion": {
+            "get": {
+                "operationId": "dashboard_get_conversion",
+                "parameters": [],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get list of conversion",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetConversion"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/chat/{message_id}/poll": {
+            "get": {
+                "operationId": "chat_get_latest_chat",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "message_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "timestamp",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get latest chat logs",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatSchema2"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/chat/{message_id}/read": {
+            "get": {
+                "operationId": "chat_mark_chat_as_read",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "message_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Mark chat as read",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OkResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/chat/{message_id}/toggle": {
+            "get": {
+                "operationId": "chat_activate_chat",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "message_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Activate chat",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OkResponse"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/chat/{message_id}/summary": {
+            "get": {
+                "operationId": "chat_get_chat_summary",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "message_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    }
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get chat summary",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ChatSummary"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/chat/{message_id}/actions": {
+            "get": {
+                "operationId": "chat_get_actions",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "message_id",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": true
+                    },
+                    {
+                        "in": "query",
+                        "name": "metadata",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "include_completed",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Chat"
+                ],
+                "summary": "Get actions for a message",
+                "description": "metadata[bool]: include metadata in response\ninclude_completed[bool]: include completed actions in response",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Action"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/dashboard/conversion/summary": {
+            "get": {
+                "operationId": "dashboard_get_conversion_summary",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "org_id",
+                        "description": "Organization ID",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get list of conversion summary",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetConversionSummary"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/dashboard/conversion/services": {
+            "get": {
+                "operationId": "dashboard_get_services",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "order",
+                        "description": "Order direction (asc/desc)",
+                        "schema": {
+                            "type": "string",
+                            "default": "desc",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get list of services",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetInquiryServices"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/dashboard/conversion/messages": {
+            "get": {
+                "operationId": "dashboard_get_messages",
+                "parameters": [],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get hourly count of messages sent by platform and bot, with optional sorting.",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetMessagesRate"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/v1/dashboard/conversion/consultations": {
+            "get": {
+                "operationId": "dashboard_get_consultations",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "bucket",
+                        "description": "Bucket for grouping data (daily/weekly/monthly)",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "daily",
+                                "weekly",
+                                "monthly"
+                            ]
+                        },
+                        "required": false
+                    },
+                    {
+                        "in": "query",
+                        "name": "order",
+                        "description": "Order direction (asc/desc)",
+                        "schema": {
+                            "type": "string",
+                            "default": "desc",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        },
+                        "required": false
+                    }
+                ],
+                "tags": [
+                    "Dashboard"
+                ],
+                "summary": "Get list of conversations created vs consultations created",
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetConsultationsRate"
+                                }
+                            }
+                        },
+                        "description": "OK"
+                    }
+                }
+            }
         }
-      }
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
+    "openapi": "3.1.0",
+    "components": {
+        "schemas": {
+            "LocationBase": {
+                "type": "object",
+                "properties": {
+                    "country": {
+                        "type": "string"
+                    },
+                    "lat": {
+                        "type": "number"
+                    },
+                    "long": {
+                        "type": "number"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "postal_code": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "country"
+                ]
+            },
+            "LocationBase1": {
+                "type": "object",
+                "properties": {
+                    "country": {
+                        "type": "string"
+                    },
+                    "lat": {
+                        "type": "number"
+                    },
+                    "long": {
+                        "type": "number"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "city": {
+                        "type": "string"
+                    },
+                    "postal_code": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "country"
+                ]
+            },
+            "Birthday": {
+                "type": "object",
+                "properties": {
+                    "birth_date": {
+                        "type": "number",
+                        "description": "User's birth date in Unix epoch format"
+                    },
+                    "month": {
+                        "type": "string",
+                        "default": "February",
+                        "description": "User's birth month in full word"
+                    },
+                    "day": {
+                        "type": "integer",
+                        "default": 1,
+                        "description": "User's birth day"
+                    },
+                    "year": {
+                        "type": "integer",
+                        "default": 2023,
+                        "description": "User's birth year"
+                    },
+                    "age": {
+                        "type": "integer",
+                        "description": "User's age"
+                    }
+                }
+            },
+            "ContactDetails": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "default": "ashley84@example.net",
+                        "description": "User's email address"
+                    },
+                    "phone_number": {
+                        "type": "string",
+                        "default": "280-469-9411",
+                        "description": "User's phone number"
+                    },
+                    "address": {
+                        "type": "string",
+                        "default": "76310 Fox Shoals Apt. 021\nLindaville, RI 05698",
+                        "description": "User's address"
+                    },
+                    "city": {
+                        "type": "string",
+                        "default": "Lake Michaelshire",
+                        "description": "User's city"
+                    },
+                    "country": {
+                        "type": "string",
+                        "default": "Panama",
+                        "description": "User's country"
+                    },
+                    "zip_code": {
+                        "type": "string",
+                        "default": "47671",
+                        "description": "User's zip code"
+                    },
+                    "nationality": {
+                        "type": "string",
+                        "description": "User's nationality"
+                    }
+                }
+            },
+            "PersonalInformation": {
+                "type": "object",
+                "properties": {
+                    "first_name": {
+                        "type": "string",
+                        "default": "Audrey",
+                        "description": "Patient's first name"
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "default": "Ashley",
+                        "description": "Patient's last name"
+                    },
+                    "full_name": {
+                        "type": "string",
+                        "default": "",
+                        "description": "Full name of the patient"
+                    },
+                    "gender": {
+                        "type": "string",
+                        "default": "male",
+                        "description": "Patient's gender"
+                    },
+                    "status": {
+                        "type": "string",
+                        "default": "new",
+                        "description": "Patient status (e.g., 'new','old','prospect')"
+                    },
+                    "birth_information": {
+                        "description": "Patient's birth information",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Birthday"
+                            }
+                        ]
+                    },
+                    "contact_information": {
+                        "description": "Patient's contact information",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/ContactDetails"
+                            }
+                        ]
+                    }
+                }
+            },
+            "Objections": {
+                "type": "object",
+                "properties": {
+                    "reason": {
+                        "type": "string",
+                        "description": "Reason for the objection"
+                    },
+                    "sentiment": {
+                        "type": "string",
+                        "description": "Sentiment of the objection"
+                    },
+                    "confidence": {
+                        "type": "number",
+                        "description": "Confidence level of the objection"
+                    }
+                }
+            },
+            "Patient": {
+                "type": "object",
+                "properties": {
+                    "customer_id": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Unique identifier for the patient"
+                    },
+                    "is_archived": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Flag indicating if the patient is archived"
+                    },
+                    "org_id": {
+                        "type": "string",
+                        "default": "org-iydnuqoc",
+                        "description": "Organization ID"
+                    },
+                    "last_interaction": {
+                        "type": "number",
+                        "default": 1744595516.79058,
+                        "description": "Timestamp of the last interaction with the patient"
+                    },
+                    "last_interaction_repr": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Representation of the last interaction with the patient"
+                    },
+                    "last_interaction_relative_repr": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Relative representation of the last interaction with the patient"
+                    },
+                    "approx_lifetime_spend": {
+                        "type": "number",
+                        "description": "Total amount spent by the patient"
+                    },
+                    "patient_personal_information": {
+                        "description": "Patient's personal information",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/PersonalInformation"
+                            }
+                        ]
+                    },
+                    "remarks": {
+                        "type": "string",
+                        "description": "Additional remarks or notes about the patient"
+                    },
+                    "objections": {
+                        "description": "List of objections raised by the patient",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Objections"
+                            }
+                        ]
+                    }
+                }
+            },
+            "GetPatient": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/Patient"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Patient1": {
+                "type": "object",
+                "properties": {
+                    "is_archived": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Flag indicating if the patient is archived"
+                    },
+                    "org_id": {
+                        "type": "string",
+                        "default": "org-iydnuqoc",
+                        "description": "Organization ID"
+                    },
+                    "last_interaction": {
+                        "type": "number",
+                        "default": 1744595516.79058,
+                        "description": "Timestamp of the last interaction with the patient"
+                    },
+                    "last_interaction_repr": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Representation of the last interaction with the patient"
+                    },
+                    "last_interaction_relative_repr": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Relative representation of the last interaction with the patient"
+                    },
+                    "approx_lifetime_spend": {
+                        "type": "number",
+                        "description": "Total amount spent by the patient"
+                    },
+                    "patient_personal_information": {
+                        "description": "Patient's personal information",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/PersonalInformation"
+                            }
+                        ]
+                    },
+                    "remarks": {
+                        "type": "string",
+                        "description": "Additional remarks or notes about the patient"
+                    },
+                    "objections": {
+                        "description": "List of objections raised by the patient",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Objections"
+                            }
+                        ]
+                    }
+                }
+            },
+            "InsertPatient": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 201
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "Created"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Resource was created successfully"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/Patient"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Patient2": {
+                "type": "object",
+                "properties": {
+                    "is_archived": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Flag indicating if the patient is archived"
+                    },
+                    "last_interaction": {
+                        "type": "number",
+                        "default": 1744595516.79058,
+                        "description": "Timestamp of the last interaction with the patient"
+                    },
+                    "last_interaction_repr": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Representation of the last interaction with the patient"
+                    },
+                    "last_interaction_relative_repr": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Relative representation of the last interaction with the patient"
+                    },
+                    "approx_lifetime_spend": {
+                        "type": "number",
+                        "description": "Total amount spent by the patient"
+                    },
+                    "patient_personal_information": {
+                        "description": "Patient's personal information",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/PersonalInformation"
+                            }
+                        ]
+                    },
+                    "objections": {
+                        "description": "List of objections raised by the patient",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Objections"
+                            }
+                        ]
+                    }
+                }
+            },
+            "EditPatient": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 204
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "No Content"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful but no content was returned"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "DeletePatient": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 204
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "No Content"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful but no content was returned"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "KBList": {
+                "type": "object",
+                "properties": {
+                    "sources": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "StructuredDataResponse": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/KBList"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "OkResponse": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    }
+                }
+            },
+            "StringPagination": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order_by": {
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "order_direction": {
+                        "type": "string",
+                        "default": "desc",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "writeOnly": true
+                    },
+                    "count": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "total": {
+                        "type": "integer",
+                        "readOnly": true
+                    }
+                }
+            },
+            "ChatUsers": {
+                "type": "object",
+                "properties": {
+                    "platform": {
+                        "type": "string"
+                    },
+                    "org_id": {
+                        "type": "string"
+                    },
+                    "integration_id": {
+                        "type": "string"
+                    },
+                    "display_name": {
+                        "type": "string"
+                    },
+                    "user_id": {
+                        "type": "string"
+                    },
+                    "profile_pic_link": {
+                        "type": "string"
+                    },
+                    "last_message": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "branch": {
+                        "type": "string"
+                    },
+                    "unread_messages": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    },
+                    "is_ai_active": {
+                        "type": "boolean"
+                    },
+                    "message_id": {
+                        "type": "string"
+                    },
+                    "receiver_id": {
+                        "type": "string"
+                    },
+                    "last_action": {
+                        "type": "string"
+                    },
+                    "is_sent_by": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PaginatedSchemaMeta": {
+                "type": "object",
+                "properties": {
+                    "pagination": {
+                        "$ref": "#/components/schemas/StringPagination"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ChatUsers"
+                        }
+                    }
+                }
+            },
+            "Chat": {
+                "type": "object",
+                "properties": {
+                    "sender_name": {
+                        "type": "string"
+                    },
+                    "sender_id": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "receiver_id": {
+                        "type": "string"
+                    },
+                    "platform": {
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "profile_pic_link": {
+                        "type": "string"
+                    },
+                    "chat_type": {
+                        "type": "string"
+                    },
+                    "attachment_id": {
+                        "type": "string"
+                    },
+                    "attachment_url": {
+                        "type": "string"
+                    },
+                    "attachment_blob": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Platform": {
+                "type": "object",
+                "properties": {
+                    "org_id": {
+                        "type": "string",
+                        "description": "Organization ID"
+                    },
+                    "customer_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the patient"
+                    },
+                    "platform": {
+                        "type": "string",
+                        "description": "The communication platform (e.g., 'whatsapp', 'messenger')"
+                    },
+                    "sender_id": {
+                        "type": "string",
+                        "description": "Sender ID on the platform"
+                    },
+                    "display_name": {
+                        "type": "string",
+                        "description": "Display name on the platform"
+                    }
+                }
+            },
+            "Platform1": {
+                "type": "object",
+                "properties": {
+                    "platform_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the platform, whatsapp:2348123456789"
+                    },
+                    "org_id": {
+                        "type": "string",
+                        "description": "Organization ID"
+                    },
+                    "customer_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the patient"
+                    },
+                    "platform": {
+                        "type": "string",
+                        "description": "The communication platform (e.g., 'whatsapp', 'messenger')"
+                    },
+                    "sender_id": {
+                        "type": "string",
+                        "description": "Sender ID on the platform"
+                    },
+                    "display_name": {
+                        "type": "string",
+                        "description": "Display name on the platform"
+                    }
+                }
+            },
+            "InsertPlatform": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 201
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "Created"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Resource was created successfully"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/Platform1"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Platform2": {
+                "type": "object",
+                "properties": {
+                    "platform": {
+                        "type": "string",
+                        "description": "The communication platform (e.g., 'whatsapp', 'messenger')"
+                    },
+                    "sender_id": {
+                        "type": "string",
+                        "description": "Sender ID on the platform"
+                    },
+                    "display_name": {
+                        "type": "string",
+                        "description": "Display name on the platform"
+                    }
+                }
+            },
+            "EditPlatform": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 204
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "No Content"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful but no content was returned"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "DeletePlatform": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 204
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "No Content"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful but no content was returned"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "DateRepresentation": {
+                "type": "object",
+                "properties": {
+                    "timestamp": {
+                        "type": "number",
+                        "default": 1744595516.6825957,
+                        "description": "Date in Unix epoch format"
+                    },
+                    "date_repr": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Human-readable representation of the date"
+                    },
+                    "date_relative_repr": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Relative representation of the date"
+                    }
+                }
+            },
+            "PatientHistory": {
+                "type": "object",
+                "properties": {
+                    "branch": {
+                        "type": "string",
+                        "description": "Clinic branch where the patient was seen"
+                    },
+                    "approx_cost": {
+                        "type": "number",
+                        "description": "Approximate cost of the procedure"
+                    },
+                    "procedure_made": {
+                        "type": "string",
+                        "description": "Procedure performed during the visit"
+                    },
+                    "date_visited": {
+                        "description": "Date when the patient visited the clinic",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/DateRepresentation"
+                            }
+                        ]
+                    },
+                    "date_booked": {
+                        "description": "Date when the patient booked the appointment",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/DateRepresentation"
+                            }
+                        ]
+                    },
+                    "org_id": {
+                        "type": "string",
+                        "description": "Organization ID"
+                    },
+                    "customer_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the patient"
+                    }
+                }
+            },
+            "PatientHistory1": {
+                "type": "object",
+                "properties": {
+                    "treatment_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the treatment"
+                    },
+                    "branch": {
+                        "type": "string",
+                        "description": "Clinic branch where the patient was seen"
+                    },
+                    "approx_cost": {
+                        "type": "number",
+                        "description": "Approximate cost of the procedure"
+                    },
+                    "procedure_made": {
+                        "type": "string",
+                        "description": "Procedure performed during the visit"
+                    },
+                    "actions_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the action items from chat"
+                    },
+                    "date_visited": {
+                        "description": "Date when the patient visited the clinic",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/DateRepresentation"
+                            }
+                        ]
+                    },
+                    "date_booked": {
+                        "description": "Date when the patient booked the appointment",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/DateRepresentation"
+                            }
+                        ]
+                    },
+                    "org_id": {
+                        "type": "string",
+                        "description": "Organization ID"
+                    },
+                    "customer_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the patient"
+                    },
+                    "is_archived": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Flag indicating if the patient is archived"
+                    }
+                }
+            },
+            "InsertPatient1": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 201
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "Created"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Resource was created successfully"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PatientHistory1"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "PatientHistory2": {
+                "type": "object",
+                "properties": {
+                    "branch": {
+                        "type": "string",
+                        "description": "Clinic branch where the patient was seen"
+                    },
+                    "approx_cost": {
+                        "type": "number",
+                        "description": "Approximate cost of the procedure"
+                    },
+                    "procedure_made": {
+                        "type": "string",
+                        "description": "Procedure performed during the visit"
+                    },
+                    "date_visited": {
+                        "description": "Date when the patient visited the clinic",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/DateRepresentation"
+                            }
+                        ]
+                    },
+                    "date_booked": {
+                        "description": "Date when the patient booked the appointment",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/DateRepresentation"
+                            }
+                        ]
+                    }
+                }
+            },
+            "UpdatePatient": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 204
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "No Content"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful but no content was returned"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PatientHistory1"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "DeletePatient1": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 204
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "No Content"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful but no content was returned"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "MultipleFilesUpload": {
+                "type": "object",
+                "properties": {
+                    "files": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                    }
+                }
+            },
+            "GenericDataResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "CreateUserResponse": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Tenant": {
+                "type": "object",
+                "properties": {
+                    "tenant_id": {
+                        "type": "string"
+                    },
+                    "configs": {
+                        "type": "object"
+                    }
+                }
+            },
+            "StructuredDataResponse1": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Tenant"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "CountofPatients": {
+                "type": "object",
+                "properties": {
+                    "new": {
+                        "type": "integer",
+                        "description": "Count of new patients"
+                    },
+                    "existing": {
+                        "type": "integer",
+                        "description": "Count of existing patients"
+                    },
+                    "prospect": {
+                        "type": "integer",
+                        "description": "Count of prospect patients"
+                    }
+                }
+            },
+            "PatientPagination": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "integer"
+                    },
+                    "offset": {
+                        "type": "integer"
+                    },
+                    "order_by": {
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "order_direction": {
+                        "type": "string",
+                        "default": "desc",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "writeOnly": true
+                    },
+                    "count": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "total": {
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "patients_count": {
+                        "readOnly": true,
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CountofPatients"
+                            }
+                        ]
+                    }
+                }
+            },
+            "PaginatedSchemaMeta1": {
+                "type": "object",
+                "properties": {
+                    "pagination": {
+                        "$ref": "#/components/schemas/PatientPagination"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Patient"
+                        }
+                    }
+                }
+            },
+            "Patient3": {
+                "type": "object",
+                "properties": {
+                    "org_id": {
+                        "type": "string",
+                        "default": "org-iydnuqoc",
+                        "description": "Organization ID"
+                    }
+                }
+            },
+            "GetOrgPatients": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Patient3"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "GetPersonalInformation": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/PersonalInformation"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "AddPersonalInformation": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 201
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "Created"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Resource was created successfully"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Conversation": {
+                "type": "object",
+                "properties": {
+                    "message_id": {
+                        "type": "string",
+                        "description": "Identifier of the last message exchanged"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Content of the last message"
+                    },
+                    "message_context": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "Context of the last message"
+                        }
+                    },
+                    "timestamp": {
+                        "type": "number",
+                        "default": 1744595516.6820471,
+                        "description": "Timestamp of the last message"
+                    },
+                    "timestamp_repr": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Human-readable representation of the timestamp"
+                    },
+                    "timestamp_relative_repr": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Relative representation of the timestamp"
+                    },
+                    "branch": {
+                        "type": "string",
+                        "description": "Branch where the conversation took place"
+                    }
+                }
+            },
+            "PatientInquiry": {
+                "type": "object",
+                "properties": {
+                    "platform_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the platform, whatsapp:2348123456789"
+                    },
+                    "customer_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the patient"
+                    },
+                    "platform": {
+                        "type": "string",
+                        "description": "The communication platform (e.g., 'whatsapp', 'messenger')"
+                    },
+                    "sender_id": {
+                        "type": "string",
+                        "description": "Sender ID on the platform"
+                    },
+                    "display_name": {
+                        "type": "string",
+                        "description": "Display name on the platform"
+                    },
+                    "insight": {
+                        "type": "string",
+                        "description": "Insight from the conversations"
+                    },
+                    "conversation_history": {
+                        "type": "array",
+                        "items": {
+                            "description": "Conversation history on this platform",
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/Conversation"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "PatientInquiryInsight": {
+                "type": "object",
+                "properties": {
+                    "insight": {
+                        "type": "string",
+                        "description": "Insight from the history of inquiry of user"
+                    }
+                }
+            },
+            "GetOrgPatients1": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PatientInquiry"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "$ref": "#/components/schemas/PatientInquiryInsight"
+                    }
+                }
+            },
+            "ChatUsersSchema45": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "object"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Conversation1": {
+                "type": "object",
+                "properties": {
+                    "message_id": {
+                        "type": "string",
+                        "description": "Identifier of the last message exchanged"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Content of the last message"
+                    },
+                    "message_context": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "description": "Context of the last message"
+                        }
+                    },
+                    "timestamp": {
+                        "type": "number",
+                        "default": 1744595516.6820471,
+                        "description": "Timestamp of the last message"
+                    },
+                    "timestamp_repr": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Human-readable representation of the timestamp"
+                    },
+                    "timestamp_relative_repr": {
+                        "type": "string",
+                        "readOnly": true,
+                        "description": "Relative representation of the timestamp"
+                    }
+                }
+            },
+            "Platform3": {
+                "type": "object",
+                "properties": {
+                    "platform_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the platform, whatsapp:2348123456789"
+                    },
+                    "customer_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the patient"
+                    },
+                    "platform": {
+                        "type": "string",
+                        "description": "The communication platform (e.g., 'whatsapp', 'messenger')"
+                    },
+                    "sender_id": {
+                        "type": "string",
+                        "description": "Sender ID on the platform"
+                    },
+                    "display_name": {
+                        "type": "string",
+                        "description": "Display name on the platform"
+                    },
+                    "conversation_history": {
+                        "description": "Conversation history on this platform",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Conversation1"
+                            }
+                        ]
+                    }
+                }
+            },
+            "GetOrgPatients2": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Platform3"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "PatientHistory3": {
+                "type": "object",
+                "properties": {
+                    "treatment_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the treatment"
+                    },
+                    "branch": {
+                        "type": "string",
+                        "description": "Clinic branch where the patient was seen"
+                    },
+                    "approx_cost": {
+                        "type": "number",
+                        "description": "Approximate cost of the procedure"
+                    },
+                    "procedure_made": {
+                        "type": "string",
+                        "description": "Procedure performed during the visit"
+                    },
+                    "actions_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the action items from chat"
+                    },
+                    "date_visited": {
+                        "description": "Date when the patient visited the clinic",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/DateRepresentation"
+                            }
+                        ]
+                    },
+                    "date_booked": {
+                        "description": "Date when the patient booked the appointment",
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/DateRepresentation"
+                            }
+                        ]
+                    },
+                    "is_archived": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Flag indicating if the patient is archived"
+                    }
+                }
+            },
+            "GetOrgPatients3": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PatientHistory3"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "UpsellItem": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Name of the recommended item"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the recommended item"
+                    },
+                    "price": {
+                        "type": "number",
+                        "description": "Price of the recommended item"
+                    }
+                }
+            },
+            "PostPatientUpsell": {
+                "type": "object",
+                "properties": {
+                    "recommended_items": {
+                        "type": "array",
+                        "description": "List of recommended items for upsell",
+                        "items": {
+                            "$ref": "#/components/schemas/UpsellItem"
+                        }
+                    },
+                    "customer_id": {
+                        "type": "string",
+                        "description": "Unique identifier for the patient"
+                    },
+                    "org_id": {
+                        "type": "string",
+                        "description": "Organization ID"
+                    },
+                    "is_retry": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "Flag indicating if the upsell is a retry"
+                    },
+                    "types": {
+                        "type": "string",
+                        "default": "message",
+                        "description": "Type in Upselling, default is message"
+                    }
+                }
+            },
+            "UpsellPatient": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "ArchivePatient": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 204
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "No Content"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful but no content was returned"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Patient4": {
+                "type": "object",
+                "properties": {
+                    "remarks": {
+                        "type": "string",
+                        "description": "Additional remarks or notes about the patient"
+                    }
+                }
+            },
+            "EditRemarks": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 204
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "No Content"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful but no content was returned"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "UpsellItem1": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UpsellItem"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Chat1": {
+                "type": "object",
+                "properties": {
+                    "timestamp": {
+                        "type": "string"
+                    },
+                    "sender_name": {
+                        "type": "string"
+                    },
+                    "sender_id": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "receiver_id": {
+                        "type": "string"
+                    },
+                    "is_sent_by": {
+                        "type": "string"
+                    },
+                    "message_id": {
+                        "type": "string"
+                    },
+                    "platform": {
+                        "type": "string",
+                        "writeOnly": true
+                    },
+                    "profile_pic_link": {
+                        "type": "string"
+                    },
+                    "chat_type": {
+                        "type": "string"
+                    },
+                    "attachment_id": {
+                        "type": "string"
+                    },
+                    "attachment_url": {
+                        "type": "string"
+                    },
+                    "attachment_blob": {
+                        "type": "string"
+                    }
+                }
+            },
+            "PaginatedSchemaMeta2": {
+                "type": "object",
+                "properties": {
+                    "pagination": {
+                        "$ref": "#/components/schemas/StringPagination"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Chat1"
+                        }
+                    }
+                }
+            },
+            "PersonalInformation1": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "default": "new",
+                        "description": "Patient status (e.g., 'new','old','prospect')"
+                    }
+                }
+            },
+            "EditPatientStatus": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "BulkInsertPatients": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Inquiries": {
+                "type": "object",
+                "properties": {
+                    "inquiry": {
+                        "type": "string",
+                        "description": "Inquiry text"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "description": "Number of inquiries"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "description": "Inquiry ID"
+                    }
+                }
+            },
+            "GetInquiries": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Inquiries"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "GetConversion": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Inquiries"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "ChatSchema2": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Chat1"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "ChatSummary": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "string"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Action": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Action"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Conversions": {
+                "type": "object",
+                "properties": {
+                    "new_patient": {
+                        "type": "integer",
+                        "description": "Count of new patients"
+                    },
+                    "prospect_patient": {
+                        "type": "integer",
+                        "description": "Count of prospect patients"
+                    },
+                    "total_patient": {
+                        "type": "integer",
+                        "description": "Total count of patients"
+                    }
+                }
+            },
+            "GetConversionSummary": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "$ref": "#/components/schemas/Conversions"
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "Services": {
+                "type": "object",
+                "properties": {
+                    "service": {
+                        "type": "string",
+                        "description": "Service booked"
+                    },
+                    "total": {
+                        "type": "integer",
+                        "description": "Number of services inquired"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "description": "Inquiry ID"
+                    }
+                }
+            },
+            "GetInquiryServices": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Services"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "MessagesConversion": {
+                "type": "object",
+                "properties": {
+                    "hour": {
+                        "type": "integer",
+                        "description": "Hour of the message"
+                    },
+                    "csr_count": {
+                        "type": "integer",
+                        "description": "Count of messages from the csr"
+                    },
+                    "bot_count": {
+                        "type": "integer",
+                        "description": "Count of messages from the bot"
+                    }
+                }
+            },
+            "GetMessagesRate": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MessagesConversion"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "ConversionRate": {
+                "type": "object",
+                "properties": {
+                    "number_of_conversations": {
+                        "type": "integer",
+                        "description": "Number of conversations"
+                    },
+                    "number_of_conversions": {
+                        "type": "integer",
+                        "description": "Number of conversions"
+                    },
+                    "date": {
+                        "type": "integer",
+                        "description": "Timestamp of the conversion"
+                    },
+                    "date_repr": {
+                        "type": "string",
+                        "description": "Date representation of the conversion"
+                    },
+                    "year": {
+                        "type": "integer",
+                        "description": "Year of the conversion"
+                    },
+                    "date_range_repr": {
+                        "type": "string",
+                        "description": "Date range representation of the conversion"
+                    },
+                    "bucket": {
+                        "type": "string",
+                        "enum": [
+                            "daily",
+                            "weekly",
+                            "monthly"
+                        ],
+                        "description": "Bucket for grouping data (daily/weekly/monthly)"
+                    }
+                }
+            },
+            "GetConsultationsRate": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "integer",
+                        "default": 200
+                    },
+                    "message": {
+                        "type": "string",
+                        "default": "OK"
+                    },
+                    "description": {
+                        "type": "string",
+                        "default": "Request was successful"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ConversionRate"
+                        }
+                    },
+                    "total": {
+                        "type": "integer"
+                    },
+                    "additional_data": {
+                        "type": "object"
+                    }
+                }
+            }
+        }
     }
-  }
 }
