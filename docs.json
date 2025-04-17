@@ -38,6 +38,7 @@
         "tab": "Trial",
         "openapi": "https://api.staging.craig.controlflowlabs.com/apispec.json",
         "playground": {
+          "display": "simple",
           "proxy": false
         }
       }
