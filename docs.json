@@ -35,6 +35,10 @@
         ]
       },
       {
+        "tab": "Trial",
+        "openapi": "https://api.staging.craig.controlflowlabs.com/apispec.json"
+      },
+      {
         "tab": "API Reference",
         "groups": [
           {
