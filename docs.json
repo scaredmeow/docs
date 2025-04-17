@@ -36,7 +36,7 @@
       },
       {
         "tab": "Trial",
-        "openapi": "https://api.staging.craig.controlflowlabs.com/apispec.json",
+        "openapi": "https://api.staging.craig.controlflowlabs.com/apispec.jso",
         "playground": {
           "display": "interactive",
           "proxy": true
