@@ -37,6 +37,10 @@
       {
         "tab": "Trial23",
         "openapi": "https://api.staging.craig.controlflowlabs.com/apispec.json"
+      },
+      {
+        "tab": "Trial123",
+        "openapi": "https://b9k1nj4s-5010.asse.devtunnels.ms/apispec.json"
       }
     ],
     "global": {
